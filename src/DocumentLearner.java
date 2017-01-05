@@ -14,7 +14,7 @@ public class DocumentLearner {
     String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
     HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
-    public HashMap createList() {
+    public void createList() {
         File dir = new File(DirectoryPath);
         File[] dirList = dir.listFiles();
         if (dirList != null) {
@@ -40,8 +40,8 @@ public class DocumentLearner {
 //        }
 //        //System.out.println("woord aantal: " + keys.size());
 //        System.out.println("aantal woorden in totaal: " + totalValue);
-        return files;
     }
+
     public HashMap readFile(File file) {
         HashMap<String, Integer> words = new HashMap<String, Integer>();
         try {
@@ -72,7 +72,7 @@ public class DocumentLearner {
         return words;
     }
 
-    public void getFilesInfo() {
+    public HashMap getFilesInfo() {
         Set<String> keys = files.keySet();
         for (String key : keys) {
             HashMap<String, Integer> result = files.get(key);
@@ -82,5 +82,6 @@ public class DocumentLearner {
                 System.out.println("FileName: " + key + "       Woord: " + word + "      Aantal voorkomen: " + value);
             }
         }
+        return files;
     }
 }
