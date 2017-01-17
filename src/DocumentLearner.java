@@ -42,7 +42,7 @@ public class DocumentLearner {
 //        System.out.println("aantal woorden in totaal: " + totalValue);
     }
 
-    public HashMap readFile(File file) {
+    public HashMap<String, Integer> readFile(File file) {
         HashMap<String, Integer> words = new HashMap<String, Integer>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -66,6 +66,7 @@ public class DocumentLearner {
                 }
                 //System.out.println(nextElement);
             }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
