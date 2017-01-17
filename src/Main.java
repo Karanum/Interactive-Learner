@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
         DocumentLearner dl = new DocumentLearner();
         dl.createList();
-        dl.getFilesInfo();
+        //dl.getFilesInfo();
     }
 }

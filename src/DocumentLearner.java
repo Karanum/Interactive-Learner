@@ -11,21 +11,35 @@ import java.util.StringTokenizer;
  */
 public class DocumentLearner {
 
+    public DocumentLearner() {
+        Classifier classifier = new Classifier();
+        createList();
+        classifier.setTrainingData(DataClass.getClasses());
+    }
+
     String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
     HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
     public void createList() {
         File dir = new File(DirectoryPath);
-        File[] dirList = dir.listFiles();
-        if (dirList != null) {
-            for (File folder : dirList) {
-                //System.out.println(folder.getName());
-                if (folder.listFiles() != null) {
-                    for (File file : folder.listFiles()) {
+        File[] classes = dir.listFiles();
+        if (classes != null) {
+            for (File classDir : classes) {
+                DataClass dataClass;
+                if (!DataClass.getClasses().contains(classDir.getName())) {
+                    dataClass =  new DataClass(dir.getName());
+                } else {
+                    dataClass = DataClass.getClass(classDir.getName());
+                }
+                //System.out.println(dataClass.getName());
+                if (classDir.listFiles() != null) {
+                    for (File file : classDir.listFiles()) {
+                        dataClass.addFile(new DataFile(file));
                         //System.out.println(file.getName());
-                        if (!files.containsKey(file.getName())) {
-                            files.put(file.getName(), readFile(file));
-                        }
+//                        if (!files.containsKey(file.getName())) {
+//                            files.put(file.getName(), readFile(file));
+//                        }
+
                     }
                 }
 
@@ -42,47 +56,16 @@ public class DocumentLearner {
 //        System.out.println("aantal woorden in totaal: " + totalValue);
     }
 
-    public HashMap<String, Integer> readFile(File file) {
-        HashMap<String, Integer> words = new HashMap<String, Integer>();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            StringBuilder sb = new StringBuilder();
-            String line = reader.readLine();
-            while(line != null) {
-                sb.append(line);
-                line = reader.readLine();
-            }
-            String notNormalized = sb.toString();
-            notNormalized = notNormalized.toLowerCase();
-            notNormalized = notNormalized.replaceAll("[^A-Za-z0-9 ]", "");
-            //System.out.println(notNormalized);
-            StringTokenizer tokenizer = new StringTokenizer(notNormalized);
-            while (tokenizer.hasMoreElements()) {
-                String nextElement = (String) tokenizer.nextElement();
-                if (!words.containsKey(nextElement)) {
-                    words.put(nextElement, new Integer(1));
-                } else {
-                    words.put(nextElement, words.get(nextElement) + 1);
-                }
-                //System.out.println(nextElement);
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return words;
-    }
-
-    public HashMap getFilesInfo() {
-        Set<String> keys = files.keySet();
-        for (String key : keys) {
-            HashMap<String, Integer> result = files.get(key);
-            Set<String> words = result.keySet();
-            for (String word : words) {
-                int value = result.get(word);
-                System.out.println("FileName: " + key + "       Woord: " + word + "      Aantal voorkomen: " + value);
-            }
-        }
-        return files;
-    }
+//    public HashMap getFilesInfo() {
+//        Set<String> keys = files.keySet();
+//        for (String key : keys) {
+//            HashMap<String, Integer> result = files.get(key);
+//            Set<String> words = result.keySet();
+//            for (String word : words) {
+//                int value = result.get(word);
+//                System.out.println("FileName: " + key + "       Woord: " + word + "      Aantal voorkomen: " + value);
+//            }
+//        }
+//        return files;
+//    }
 }
