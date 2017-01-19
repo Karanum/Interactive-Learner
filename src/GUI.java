@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
 
 /**
@@ -13,6 +14,7 @@ public class GUI {
     private JTabbedPane tabbedPane1;
     private JLabel warningLabel;
     private JLabel pathMessage;
+    private JLabel classNames;
     private static String directoryPath;
 
 
@@ -39,8 +41,14 @@ public class GUI {
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
+                    String folders = "<html>The folder contains the following test classes: <br>";
+                    for (File folder : fileChooser.getSelectedFile().listFiles()) {
+                        folders += folder.getName() + " <br><html>";
+
+                    }
                     //pathMessage.setText("selected folder: " + fileChooser.getSelectedFile().getName());
                     pathMessage.setText("selected folder: " + fileChooser.getSelectedFile().getAbsolutePath());
+                    classNames.setText(folders);
 
                     //System.out.println(selectedFile);
                 }
