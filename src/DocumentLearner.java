@@ -17,7 +17,8 @@ public class DocumentLearner {
         classifier.setTrainingData(DataClass.getClasses());
     }
 
-    String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
+    //String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
+    String DirectoryPath = GUI.getDirectoryPathPath();
     HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
     public void createList() {
