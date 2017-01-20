@@ -19,13 +19,14 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="6fde" layout-manager="GridLayoutManager" row-count="8" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="6fde" binding="Training" layout-manager="GridLayoutManager" row-count="8" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Training"/>
             </constraints>
             <properties>
               <background color="-3414552"/>
+              <toolTipText value=""/>
             </properties>
             <border type="none"/>
             <children>
@@ -82,7 +83,7 @@
                 </constraints>
                 <properties>
                   <background color="-8394627"/>
-                  <text value="Start Learning!"/>
+                  <text value="Start Training!"/>
                 </properties>
               </component>
               <vspacer id="f2cd5">
@@ -113,13 +114,14 @@
               </hspacer>
             </children>
           </grid>
-          <grid id="4b004" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="4b004" binding="Testing" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <tabbedpane title="Testing"/>
             </constraints>
             <properties>
               <background color="-3414552"/>
+              <toolTipText value=""/>
             </properties>
             <border type="none"/>
             <children>

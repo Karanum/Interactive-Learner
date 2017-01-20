@@ -32,7 +32,7 @@ public class DocumentLearner {
                 } else {
                     dataClass = DataClass.getClass(classDir.getName());
                 }
-                //System.out.println(dataClass.getName());
+                System.out.println(dataClass.getName());
                 if (classDir.listFiles() != null) {
                     for (File f : classDir.listFiles()) {
                         dataClass.addFile(new DataFile(f));

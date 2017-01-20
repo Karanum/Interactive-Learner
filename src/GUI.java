@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -18,6 +20,8 @@ public class GUI {
     private JButton insertTestData;
     private JLabel pathMessage2;
     private JButton startButton;
+    private JPanel Testing;
+    private JPanel Training;
     private JLabel classNames;
     private static String directoryPath;
     private DocumentLearner documentLearner;
@@ -37,6 +41,7 @@ public class GUI {
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
         documentLearner = new DocumentLearner(this);
+
 
         insertTestData.addActionListener(new ActionListener() {
             @Override
@@ -60,10 +65,11 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(directoryPath == null) {
-                    Dialog dialog = new Dialog();
+                    String message = "Test data needs to be entered before you can start testing";
+                    Dialog dialog = new Dialog(message);
 
                 } else {
-                    //documentLearner.loadTrainingData();
+                    documentLearner.classify(file);
                 }
             }
         });
@@ -73,20 +79,12 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                //Dialog dialog = new Dialog();
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    file = fileChooser.getSelectedFile();
                     directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
-                    String folders = "<html>The folder contains the following test classes: <br>";
-                    for (File folder : fileChooser.getSelectedFile().listFiles()) {
-                        folders += folder.getName() + " <br><html>";
-
-                    }
                     //pathMessage.setText("selected folder: " + fileChooser.getSelectedFile().getName());
-                    pathMessage.setText("selected folder: " + fileChooser.getSelectedFile().getAbsolutePath());
-                    classNames.setText(folders);
-
-                    //System.out.println(selectedFile);
+                    pathMessage.setText("selected folder: " + directoryPath);
                 }
 
             }
@@ -95,16 +93,19 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(directoryPath == null) {
-                    Dialog dialog = new Dialog();
+                    String message = "Train data needs to be entered before you can start training";
+                    Dialog dialog = new Dialog(message);
 
                 } else {
+                    //System.out.println(file.getName());
                     documentLearner.loadTrainingData(file);
                 }
             }
         });
-
     }
+
     public DataClass verifyClass(File file, DataClass dataClass) {
+
 
         return null;
     }
