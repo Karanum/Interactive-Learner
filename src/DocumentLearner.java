@@ -10,32 +10,32 @@ import java.util.StringTokenizer;
  * Created by Dylan on 4-1-2017.
  */
 public class DocumentLearner {
+    Classifier classifier = null;
+    GUI gui;
+
 
     public DocumentLearner() {
-        Classifier classifier = new Classifier();
-        createList();
-        classifier.setTrainingData(DataClass.getClasses());
+        classifier = new Classifier();
+
     }
 
     //String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
-    String DirectoryPath = GUI.getDirectoryPathPath();
-    HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
+    // HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
-    public void createList() {
-        File dir = new File(DirectoryPath);
-        File[] classes = dir.listFiles();
+    public void loadTrainingData(File file) {
+        File[] classes = file.listFiles();
         if (classes != null) {
             for (File classDir : classes) {
                 DataClass dataClass;
                 if (!DataClass.getClasses().contains(classDir.getName())) {
-                    dataClass =  new DataClass(dir.getName());
+                    dataClass = new DataClass(file.getName());
                 } else {
                     dataClass = DataClass.getClass(classDir.getName());
                 }
                 //System.out.println(dataClass.getName());
                 if (classDir.listFiles() != null) {
-                    for (File file : classDir.listFiles()) {
-                        dataClass.addFile(new DataFile(file));
+                    for (File f : classDir.listFiles()) {
+                        dataClass.addFile(new DataFile(f));
                         //System.out.println(file.getName());
 //                        if (!files.containsKey(file.getName())) {
 //                            files.put(file.getName(), readFile(file));
@@ -46,6 +46,23 @@ public class DocumentLearner {
 
             }
         }
+        classifier.setTrainingData(DataClass.getClasses());
+    }
+
+    public void classify(File file) {
+        if(file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                DataClass dataClass = classifier.classify(new DataFile(f));
+                gui.verifyClass(f, dataClass);
+            }
+        } else {
+            DataClass dataClass = classifier.classify(new DataFile(file));
+            gui.verifyClass(file, dataClass);
+        }
+
+
+    }
+}
 //        Set<String> keys = words.keySet();
 //        int totalValue = 0;
 //        for (String key : keys) {
@@ -55,7 +72,6 @@ public class DocumentLearner {
 //        }
 //        //System.out.println("woord aantal: " + keys.size());
 //        System.out.println("aantal woorden in totaal: " + totalValue);
-    }
 
 //    public HashMap getFilesInfo() {
 //        Set<String> keys = files.keySet();
@@ -69,4 +85,4 @@ public class DocumentLearner {
 //        }
 //        return files;
 //    }
-}
+

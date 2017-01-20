@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
+import javax.xml.crypto.Data;
 
 /**
  * Created by Dylan on 18-1-2017.
@@ -14,9 +15,14 @@ public class GUI {
     private JTabbedPane tabbedPane1;
     private JLabel warningLabel;
     private JLabel pathMessage;
+    private JButton insertTestData;
+    private JLabel pathMessage2;
+    private JButton startButton;
     private JLabel classNames;
     private static String directoryPath;
-
+    private DocumentLearner documentLearner;
+    private File file;
+    private DataClass verifiedClass;
 
     public GUI() {
 
@@ -30,7 +36,37 @@ public class GUI {
         frame.setSize((int)dim.getWidth()/2, (int)dim.getHeight()/2);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
+        documentLearner = new DocumentLearner();
 
+        insertTestData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
+                    file = fileChooser.getSelectedFile();
+                    if (fileChooser.getSelectedFile().isDirectory()) {
+                        pathMessage2.setText("You have selected the folder: " + directoryPath);
+                    } else {
+                        pathMessage2.setText("You have selected the file: " + directoryPath);
+                    }
+                }
+            }
+        });
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(directoryPath == null) {
+                    Dialog dialog = new Dialog();
+
+                } else {
+                    //documentLearner.loadTrainingData();
+                }
+            }
+        });
 
         insertData.addActionListener(new ActionListener() {
             @Override
@@ -62,15 +98,14 @@ public class GUI {
                     Dialog dialog = new Dialog();
 
                 } else {
-                    DocumentLearner documentLearner = new DocumentLearner();
-                    documentLearner.createList();
+                    documentLearner.loadTrainingData(file);
                 }
             }
         });
-    }
 
-    public static String getDirectoryPathPath() {
-        return directoryPath;
     }
+    public DataClass verifyClass(File file, DataClass dataClass) {
 
+        return null;
+    }
 }
