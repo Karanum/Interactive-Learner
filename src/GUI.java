@@ -36,7 +36,7 @@ public class GUI {
         frame.setSize((int)dim.getWidth()/2, (int)dim.getHeight()/2);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
-        documentLearner = new DocumentLearner();
+        documentLearner = new DocumentLearner(this);
 
         insertTestData.addActionListener(new ActionListener() {
             @Override

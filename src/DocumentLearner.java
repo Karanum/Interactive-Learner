@@ -13,8 +13,8 @@ public class DocumentLearner {
     Classifier classifier = null;
     GUI gui;
 
-
-    public DocumentLearner() {
+    public DocumentLearner(GUI gui) {
+        this.gui = gui;
         classifier = new Classifier();
 
     }
