@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 public class DocumentLearner {
 
     public DocumentLearner() {
-        Classifier classifier = new Classifier();
+        Classifier classifier = new NaiveBayesClassifier();
         createList();
         classifier.setTrainingData(DataClass.getClasses());
     }
