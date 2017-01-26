@@ -85,16 +85,24 @@ public class NaiveBayesClassifier implements Classifier {
         return bestClass;
     }
 
-    private void cullVocabulary() {
+    private void calculateChiValues() {
         HashMap<String, Integer> combinedVocab = DataClass.getCombinedVocabulary();
-
+        HashMap<DataClass, HashMap<String, Integer>> classVocabs = new HashMap<>();
         HashMap<String, Float> chiValueMap = new HashMap<>();
+        Collection<DataClass> classes = DataClass.getClasses();
+
+        for (DataClass c : classes) {
+            classVocabs.put(c, c.getVocabulary());
+        }
+
+        float numClasses = (float) classes.size();
         for (String word : vocabulary) {
             float chi = 0;
-            float expectedFreq = combinedVocab.get(word) / (float) (DataClass.getClasses().size());
-            for (DataClass c : DataClass.getClasses()) {
-                if (c.getVocabulary().containsKey(word)) {
-                    chi += Math.pow((c.getVocabulary().get(word) - expectedFreq), 2) / expectedFreq;
+            float expectedFreq = combinedVocab.get(word) / numClasses;
+            for (DataClass c : classes) {
+                HashMap<String, Integer> classVocab = classVocabs.get(c);
+                if (classVocab.containsKey(word)) {
+                    chi += Math.pow((classVocab.get(word) - expectedFreq), 2) / expectedFreq;
                 }
             }
             chiValueMap.put(word, chi);
@@ -102,7 +110,12 @@ public class NaiveBayesClassifier implements Classifier {
 
         chiValues = new ArrayList<>(chiValueMap.entrySet());
         Collections.sort(chiValues, (Map.Entry<String, Float> a, Map.Entry<String, Float> b)
-                                        -> b.getValue().compareTo(a.getValue()));
+                -> b.getValue().compareTo(a.getValue()));
+    }
+
+    private void cullVocabulary() {
+        calculateChiValues();
+
         if (maxVocabSize > 0 && maxVocabSize < chiValues.size()) {
             chiValues = chiValues.subList(0, maxVocabSize);
         }
