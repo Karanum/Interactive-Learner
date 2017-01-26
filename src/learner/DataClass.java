@@ -1,3 +1,5 @@
+package learner;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +26,19 @@ public class DataClass {
 		}
 		return amount;
 	}
+
+	public static HashMap<String, Integer> getCombinedVocabulary() {
+		HashMap<String, Integer> result = new HashMap<>();
+		for (DataClass c : getClasses()) {
+			HashMap<String, Integer> vocab = c.getVocabulary();
+			for (String word : vocab.keySet()) {
+				int n = 0;
+				if (result.containsKey(word)) n = result.get(word);
+				result.put(word, n + vocab.get(word));
+			}
+		}
+		return result;
+	}
 	
 	public static void reset() {
 		classes.clear();
@@ -38,6 +53,7 @@ public class DataClass {
 	public DataClass(String name) {
 		this.name = name;
 		classes.put(name, this);
+		files = new HashSet<>();
 	}
 	
 	public String getName() {
@@ -57,7 +73,7 @@ public class DataClass {
 	}
 	
 	public HashMap<String, Integer> getVocabulary() {
-		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		HashMap<String, Integer> result = new HashMap<>();
 		for (DataFile file : files) {
 			HashMap<String, Integer> tokens = file.getTokenizedWords();
 			for (String word : tokens.keySet()) {

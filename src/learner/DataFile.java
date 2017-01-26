@@ -1,3 +1,5 @@
+package learner;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,6 +12,7 @@ public class DataFile {
 	HashMap<String, Integer> words = new HashMap<String, Integer>();
 
 	public DataFile(File file) {
+		if (file == null) return;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			StringBuilder sb = new StringBuilder();
@@ -30,7 +33,6 @@ public class DataFile {
 				} else {
 					words.put(nextElement, words.get(nextElement) + 1);
 				}
-				//System.out.println(nextElement);
 			}
 			reader.close();
 		} catch (IOException e) {

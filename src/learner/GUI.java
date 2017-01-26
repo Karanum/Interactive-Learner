@@ -1,3 +1,5 @@
+package learner;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -59,7 +61,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(directoryPath == null) {
-                    Dialog dialog = new Dialog();
+                    learner.Dialog dialog = new learner.Dialog();
 
                 } else {
                     DocumentLearner documentLearner = new DocumentLearner();

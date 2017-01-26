@@ -1,3 +1,7 @@
+package learner;
+
+import test.FakeDataFile;
+
 import javax.swing.*;
 
 /**
@@ -7,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         GUI gui = new GUI();
-        //DocumentLearner dl = new DocumentLearner();
+        //learner.DocumentLearner dl = new learner.DocumentLearner();
         //dl.createList();
         //dl.getFilesInfo();
     }
