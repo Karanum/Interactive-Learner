@@ -23,7 +23,7 @@ public class DataFile {
 			}
 			String notNormalized = sb.toString();
 			notNormalized = notNormalized.toLowerCase();
-			notNormalized = notNormalized.replaceAll("[^A-Za-z0-9 ]", "");
+			notNormalized = notNormalized.replaceAll("[^A-Za-z0-9]", "");
 			//System.out.println(notNormalized);
 			StringTokenizer tokenizer = new StringTokenizer(notNormalized);
 			while (tokenizer.hasMoreElements()) {

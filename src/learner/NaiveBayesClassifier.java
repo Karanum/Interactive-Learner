@@ -12,6 +12,7 @@ public class NaiveBayesClassifier implements Classifier {
 
     private Random random;
     private int maxVocabSize = -1;
+    private float chiThreshold = -1;
 
     private Set<String> vocabulary = null;
     private List<Map.Entry<String, Float>> chiValues = null;
@@ -39,6 +40,10 @@ public class NaiveBayesClassifier implements Classifier {
         maxVocabSize = vocabSize;
     }
 
+    public void setChiThreshold(float threshold) {
+        chiThreshold = threshold;
+    }
+
     public void outputChiValues() {
         try {
             BufferedWriter out = new BufferedWriter(
@@ -63,11 +68,9 @@ public class NaiveBayesClassifier implements Classifier {
         HashMap<String, Integer> fileVocab = file.getTokenizedWords();
         for (DataClass c : DataClass.getClasses()) {
             float probability = classProbabilities.get(c);
-            System.out.println("p = " + probability);
             for (String word : fileVocab.keySet()) {
                 if (vocabulary.contains(word)) {
                     probability *= likelihoodTables.get(c).get(word);
-                    System.out.println(word + ": " + likelihoodTables.get(c).get(word));
                 }
             }
             if (verbose) System.out.println("Probability for " + c.getName() + " = " + probability);
@@ -103,6 +106,19 @@ public class NaiveBayesClassifier implements Classifier {
                                         -> b.getValue().compareTo(a.getValue()));
         if (maxVocabSize > 0 && maxVocabSize < chiValues.size()) {
             chiValues = chiValues.subList(0, maxVocabSize);
+        }
+        if (chiThreshold > 0) {
+            int thresholdIndex = -1;
+            int i = 0;
+            while (thresholdIndex < 0 && i < chiValues.size()) {
+                if (chiValues.get(i).getValue() < chiThreshold) {
+                    thresholdIndex = i;
+                }
+                ++i;
+            }
+            if (thresholdIndex != -1) {
+                chiValues = chiValues.subList(0, thresholdIndex + 1);
+            }
         }
 
         trainingData = new HashMap<>();

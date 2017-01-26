@@ -6,6 +6,7 @@ public interface Classifier {
 
 	void setTrainingData(Collection<DataClass> classes);
 	void setMaxVocabSize(int vocabSize);
+	void setChiThreshold(float threshold);
 
 	DataClass classify(DataFile file);
 
