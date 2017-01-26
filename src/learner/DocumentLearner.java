@@ -25,7 +25,6 @@ public class DocumentLearner {
         File[] classes = file.listFiles();
         if (classes != null) {
             for (File classDir : classes) {
-                System.out.println(classDir.getName());
                 DataClass dataClass;
                 if (!DataClass.getClasses().contains(classDir.getName())) {
                     dataClass = new DataClass(classDir.getName());
@@ -47,7 +46,7 @@ public class DocumentLearner {
 
             }
         }
-        classifier.setTrainingData(DataClass.getClasses());
+        classifier.setTrainingData(DataClass.getClasses(), true);
     }
 
     public ResultTable classify(File file) {
@@ -65,6 +64,9 @@ public class DocumentLearner {
                         DataFile dataFile = new DataFile(textFile);
                         DataClass resultClass = classifier.classify(dataFile);
                         resultTable.addResult(dataClass, resultClass);
+
+                        dataClass.addFile(dataFile);
+                        classifier.setTrainingData(DataClass.getClasses(), false);
                     }
                 }
             }

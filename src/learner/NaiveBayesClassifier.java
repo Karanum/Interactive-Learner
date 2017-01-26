@@ -27,15 +27,17 @@ public class NaiveBayesClassifier implements Classifier {
     }
 
     public void setTrainingData(Collection<DataClass> classes) {
+        this.setTrainingData(classes, false);
+    }
+
+    public void setTrainingData(Collection<DataClass> classes, boolean outputChiValues) {
         vocabulary = new HashSet<>();
         for (DataClass c : classes) {
             vocabulary.addAll(c.getVocabulary().keySet());
         }
         cullVocabulary();
-        System.out.println("Creating probability tables...");
         calculateTables();
-        System.out.println("Creating record of chi-squared values...");
-        outputChiValues();
+        if (outputChiValues) outputChiValues();
     }
 
     public void setMaxVocabSize(int vocabSize) {
@@ -65,19 +67,20 @@ public class NaiveBayesClassifier implements Classifier {
         if (trainingData == null) return null;
 
         DataClass bestClass = null;
-        float bestProbability = -1.0f;
+        float bestProbability = 0.0f;
 
         HashMap<String, Integer> fileVocab = file.getTokenizedWords();
         for (DataClass c : DataClass.getClasses()) {
             float probability = classProbabilities.get(c);
             for (String word : fileVocab.keySet()) {
                 if (vocabulary.contains(word)) {
-                    probability *= likelihoodTables.get(c).get(word);
+                    //Sum of logarithms, since product of likelihoods would become too small for Java
+                    probability += Math.log(likelihoodTables.get(c).get(word));
                 }
             }
             if (verbose) System.out.println("Probability for " + c.getName() + " = " + probability);
 
-            if (probability > bestProbability) {
+            if (probability > bestProbability || bestProbability == 0) {
                 bestProbability = probability;
                 bestClass = c;
             } else if (probability == bestProbability && random.nextInt(2) == 0) {
@@ -118,11 +121,8 @@ public class NaiveBayesClassifier implements Classifier {
             classVocabs.put(c, c.getVocabulary());
         }
 
-        System.out.println("Calculating chi-squared values...");
         calculateChiValues(classVocabs);
 
-
-        System.out.println("Culling vocabulary...");
         if (maxVocabSize > 0 && maxVocabSize < chiValues.size()) {
             chiValues = chiValues.subList(0, maxVocabSize);
         }
@@ -140,7 +140,6 @@ public class NaiveBayesClassifier implements Classifier {
             }
         }
 
-        System.out.println("Storing final training data...");
         trainingData = new HashMap<>();
         for (DataClass c : DataClass.getClasses()) {
             trainingData.put(c, new HashMap<>());
@@ -180,13 +179,13 @@ public class NaiveBayesClassifier implements Classifier {
         }
 
         likelihoodTables = new HashMap<>();
-        float smoothing = 0.01f;
         for (DataClass c : classes) {
             likelihoodTables.put(c, new HashMap<>());
+            float smoothing = 0.01f;
             for (String word : vocabulary) {
                 float occurrences = smoothing;
                 if (trainingData.get(c).containsKey(word)) occurrences += trainingData.get(c).get(word);
-                float likelihood = (occurrences) / (float) (wordCounts.get(c) + vocabulary.size() + smoothing);
+                float likelihood = occurrences / (wordCounts.get(c) + vocabulary.size() + smoothing);
                 likelihoodTables.get(c).put(word, likelihood);
             }
         }
