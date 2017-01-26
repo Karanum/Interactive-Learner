@@ -179,12 +179,13 @@ public class NaiveBayesClassifier implements Classifier {
         }
 
         likelihoodTables = new HashMap<>();
+        float smoothing = 0.01f;
         for (DataClass c : classes) {
             likelihoodTables.put(c, new HashMap<>());
             for (String word : vocabulary) {
-                int occurrences = 1;
+                float occurrences = smoothing;
                 if (trainingData.get(c).containsKey(word)) occurrences += trainingData.get(c).get(word);
-                float likelihood = (occurrences) / (float) (wordCounts.get(c) + vocabulary.size() + 1);
+                float likelihood = (occurrences) / (float) (wordCounts.get(c) + vocabulary.size() + smoothing);
                 likelihoodTables.get(c).put(word, likelihood);
             }
         }
