@@ -31,6 +31,26 @@ public class ResultTable {
         return total;
     }
 
+    public int getCorrect(DataClass dataClass) {
+        return table.get(dataClass).get(dataClass);
+    }
+
+    public int getTrueAmount(DataClass dataClass) {
+        int result = 0;
+        for (DataClass c : DataClass.getClasses()) {
+            result += table.get(dataClass).get(c);
+        }
+        return result;
+    }
+
+    public int getClassifiedAmount(DataClass dataClass) {
+        int result = 0;
+        for (DataClass c : DataClass.getClasses()) {
+            result += table.get(c).get(dataClass);
+        }
+        return result;
+    }
+
     public float getAccuracy() {
         int correct = 0;
         for (DataClass c : DataClass.getClasses()) {
@@ -41,19 +61,13 @@ public class ResultTable {
 
     public float getPrecision(DataClass dataClass) {
         int correct = table.get(dataClass).get(dataClass);
-        int results = 0;
-        for (DataClass c : DataClass.getClasses()) {
-            results += table.get(c).get(dataClass);
-        }
+        int results = getClassifiedAmount(dataClass);
         return correct / (float) results;
     }
 
     public float getRecall(DataClass dataClass) {
         int correct = table.get(dataClass).get(dataClass);
-        int results = 0;
-        for (DataClass c : DataClass.getClasses()) {
-            results += table.get(dataClass).get(c);
-        }
+        int results = getTrueAmount(dataClass);
         return correct / (float) results;
     }
 }
