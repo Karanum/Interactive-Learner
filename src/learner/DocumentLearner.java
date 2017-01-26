@@ -12,8 +12,7 @@ public class DocumentLearner {
 
     public DocumentLearner(GUI gui) {
         this.gui = gui;
-        classifier = new Classifier();
-
+        classifier = new NaiveBayesClassifier();
     }
 
     //String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
