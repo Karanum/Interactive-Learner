@@ -54,15 +54,13 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
                     testFile = fileChooser.getSelectedFile();
                     if (fileChooser.getSelectedFile().isDirectory()) {
                         pathMessage2.setText("You have selected the folder: " + directoryPath);
-                    } else {
-                        pathMessage2.setText("You have selected the file: " + directoryPath);
                     }
                 }
             }
