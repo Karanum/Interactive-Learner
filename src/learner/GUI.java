@@ -31,7 +31,8 @@ public class GUI {
     private JLabel classNames;
     private static String directoryPath;
     private DocumentLearner documentLearner;
-    private File file;
+    private File learnFile;
+    private File testFile;
     private DataClass verifiedClass;
 
     public GUI() {
@@ -57,7 +58,7 @@ public class GUI {
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
-                    file = fileChooser.getSelectedFile();
+                    testFile = fileChooser.getSelectedFile();
                     if (fileChooser.getSelectedFile().isDirectory()) {
                         pathMessage2.setText("You have selected the folder: " + directoryPath);
                     } else {
@@ -75,7 +76,7 @@ public class GUI {
                     Dialog dialog = new Dialog(message);
 
                 } else {
-                    ResultTable resultTable = documentLearner.classify(file);
+                    ResultTable resultTable = documentLearner.classify(testFile);
                     String message = "<html>Documents classified: " + resultTable.getTotalResults() + "<br>";
                     for (DataClass c : DataClass.getClasses()) {
                         message += resultTable.getCorrect(c) + " out of " + resultTable.getTrueAmount(c) + " correct for: "
@@ -94,7 +95,7 @@ public class GUI {
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    file = fileChooser.getSelectedFile();
+                    learnFile = fileChooser.getSelectedFile();
                     directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
                     //pathMessage.setText("selected folder: " + fileChooser.getSelectedFile().getName());
                     pathMessage.setText("selected folder: " + directoryPath);
@@ -126,7 +127,7 @@ public class GUI {
 
                 } else {
                     //System.out.println(file.getName());
-                    documentLearner.loadTrainingData(file, vocabularyData, chiData);
+                    documentLearner.loadTrainingData(learnFile, vocabularyData, chiData);
                 }
             }
         });
