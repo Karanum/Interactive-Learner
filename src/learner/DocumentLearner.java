@@ -25,10 +25,10 @@ public class DocumentLearner {
         File[] classes = file.listFiles();
         if (classes != null) {
             for (File classDir : classes) {
-                //System.out.println(classDir.getName());
+                System.out.println(classDir.getName());
                 DataClass dataClass;
                 if (!DataClass.getClasses().contains(classDir.getName())) {
-                    dataClass = new DataClass(file.getName());
+                    dataClass = new DataClass(classDir.getName());
                 } else {
                     dataClass = DataClass.getClass(classDir.getName());
                 }
