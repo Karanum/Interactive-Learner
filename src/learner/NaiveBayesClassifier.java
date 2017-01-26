@@ -31,6 +31,12 @@ public class NaiveBayesClassifier implements Classifier {
     }
 
     public void setTrainingData(Collection<DataClass> classes, boolean outputChiValues) {
+        chiValues = new ArrayList<>();
+        trainingData = new HashMap<>();
+        wordCounts = new HashMap<>();
+        classProbabilities = new HashMap<>();
+        likelihoodTables = new HashMap<>();
+
         vocabulary = new HashSet<>();
         for (DataClass c : classes) {
             vocabulary.addAll(c.getVocabulary().keySet());
@@ -136,7 +142,7 @@ public class NaiveBayesClassifier implements Classifier {
                 ++i;
             }
             if (thresholdIndex != -1) {
-                chiValues = chiValues.subList(0, thresholdIndex + 1);
+                chiValues = chiValues.subList(0, thresholdIndex);
             }
         }
 
