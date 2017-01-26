@@ -26,10 +26,6 @@ public class NaiveBayesClassifier implements Classifier {
         random = new Random(System.currentTimeMillis());
     }
 
-    public void setTrainingData(Collection<DataClass> classes) {
-        this.setTrainingData(classes, false);
-    }
-
     public void setTrainingData(Collection<DataClass> classes, boolean outputChiValues) {
         chiValues = new ArrayList<>();
         trainingData = new HashMap<>();
