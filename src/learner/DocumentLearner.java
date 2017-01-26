@@ -20,6 +20,7 @@ public class DocumentLearner {
     // HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
     public void loadTrainingData(File file, int vocabularySize, float chiValue) {
+        DataClass.reset();
         classifier.setMaxVocabSize(vocabularySize);
         classifier.setChiThreshold(chiValue);
         File[] classes = file.listFiles();
