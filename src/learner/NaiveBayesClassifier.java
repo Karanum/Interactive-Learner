@@ -88,16 +88,10 @@ public class NaiveBayesClassifier implements Classifier {
         return bestClass;
     }
 
-    private void calculateChiValues() {
+    private void calculateChiValues(HashMap<DataClass, HashMap<String, Integer>> classVocabs) {
         HashMap<String, Integer> combinedVocab = DataClass.getCombinedVocabulary();
-        HashMap<DataClass, HashMap<String, Integer>> classVocabs = new HashMap<>();
         HashMap<String, Float> chiValueMap = new HashMap<>();
         Collection<DataClass> classes = DataClass.getClasses();
-
-        for (DataClass c : classes) {
-            classVocabs.put(c, c.getVocabulary());
-            System.out.println(c.getName());
-        }
 
         float numClasses = (float) classes.size();
         for (String word : vocabulary) {
@@ -113,14 +107,20 @@ public class NaiveBayesClassifier implements Classifier {
         }
 
         chiValues = new ArrayList<>(chiValueMap.entrySet());
-        System.out.println(chiValues.size());
         Collections.sort(chiValues, (Map.Entry<String, Float> a, Map.Entry<String, Float> b)
                 -> b.getValue().compareTo(a.getValue()));
     }
 
     private void cullVocabulary() {
+        Collection<DataClass> classes = DataClass.getClasses();
+        HashMap<DataClass, HashMap<String, Integer>> classVocabs = new HashMap<>();
+        for (DataClass c : classes) {
+            classVocabs.put(c, c.getVocabulary());
+        }
+
         System.out.println("Calculating chi-squared values...");
-        calculateChiValues();
+        calculateChiValues(classVocabs);
+
 
         System.out.println("Culling vocabulary...");
         if (maxVocabSize > 0 && maxVocabSize < chiValues.size()) {
@@ -150,8 +150,8 @@ public class NaiveBayesClassifier implements Classifier {
         for (Map.Entry<String, Float> entry : chiValues) {
             String word = entry.getKey();
             vocabulary.add(word);
-            for (DataClass c : DataClass.getClasses()) {
-                HashMap<String, Integer> classVocab = c.getVocabulary();
+            for (DataClass c : classes) {
+                HashMap<String, Integer> classVocab = classVocabs.get(c);
                 if (classVocab.containsKey(word)) {
                     trainingData.get(c).put(word, classVocab.get(word));
                 }
@@ -162,8 +162,12 @@ public class NaiveBayesClassifier implements Classifier {
     private void calculateTables() {
         wordCounts = new HashMap<>();
         classProbabilities = new HashMap<>();
-        for (DataClass c : DataClass.getClasses()) {
-            float probability = c.getFileCount() / (float) DataClass.getTotalFileCount();
+        Collection<DataClass> classes = DataClass.getClasses();
+
+        float totalFiles = (float) DataClass.getTotalFileCount();
+
+        for (DataClass c : classes) {
+            float probability = c.getFileCount() / totalFiles;
             classProbabilities.put(c, probability);
 
             HashMap<String, Integer> words = trainingData.get(c);
@@ -176,7 +180,7 @@ public class NaiveBayesClassifier implements Classifier {
         }
 
         likelihoodTables = new HashMap<>();
-        for (DataClass c : DataClass.getClasses()) {
+        for (DataClass c : classes) {
             likelihoodTables.put(c, new HashMap<>());
             for (String word : vocabulary) {
                 int occurrences = 1;
