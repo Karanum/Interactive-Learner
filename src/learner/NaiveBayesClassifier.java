@@ -76,7 +76,6 @@ public class NaiveBayesClassifier implements Classifier {
                 }
             }
             if (verbose) System.out.println("Probability for " + c.getName() + " = " + probability);
-
             if (probability > bestProbability) {
                 bestProbability = probability;
                 bestClass = c;
@@ -185,10 +184,9 @@ public class NaiveBayesClassifier implements Classifier {
             for (String word : vocabulary) {
                 int occurrences = 1;
                 if (trainingData.get(c).containsKey(word)) occurrences += trainingData.get(c).get(word);
-                float likelihood = (occurrences) / (float) (wordCounts.get(c) + vocabulary.size() + 1);
+                float likelihood = occurrences / (float) (wordCounts.get(c) + vocabulary.size() + 1);
                 likelihoodTables.get(c).put(word, likelihood);
             }
         }
     }
-
 }
