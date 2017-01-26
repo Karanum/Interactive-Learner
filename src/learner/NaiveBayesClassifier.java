@@ -96,6 +96,7 @@ public class NaiveBayesClassifier implements Classifier {
 
         for (DataClass c : classes) {
             classVocabs.put(c, c.getVocabulary());
+            System.out.println(c.getName());
         }
 
         float numClasses = (float) classes.size();
@@ -111,13 +112,14 @@ public class NaiveBayesClassifier implements Classifier {
             chiValueMap.put(word, chi);
         }
 
-        System.out.println("Sorting vocabulary...");
         chiValues = new ArrayList<>(chiValueMap.entrySet());
+        System.out.println(chiValues.size());
         Collections.sort(chiValues, (Map.Entry<String, Float> a, Map.Entry<String, Float> b)
                 -> b.getValue().compareTo(a.getValue()));
     }
 
     private void cullVocabulary() {
+        System.out.println("Calculating chi-squared values...");
         calculateChiValues();
 
         System.out.println("Culling vocabulary...");
