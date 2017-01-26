@@ -32,6 +32,7 @@ public class NaiveBayesClassifier implements Classifier {
         }
         cullVocabulary();
         calculateTables();
+        outputChiValues();
     }
 
     public void setMaxVocabSize(int vocabSize) {

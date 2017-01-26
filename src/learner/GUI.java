@@ -4,6 +4,8 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.xml.crypto.Data;
 
@@ -23,6 +25,9 @@ public class GUI {
     private JButton startButton;
     private JPanel Testing;
     private JPanel Training;
+    private JTextField chiValue;
+    private JTextField vocabularySize;
+    private JLabel structureMessage;
     private JLabel classNames;
     private static String directoryPath;
     private DocumentLearner documentLearner;
@@ -38,8 +43,8 @@ public class GUI {
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize((int)dim.getWidth()/2, (int)dim.getHeight()/2);
-        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+        frame.setSize((int) dim.getWidth() / 2, (int) dim.getHeight() / 2);
+        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
         frame.setVisible(true);
         documentLearner = new DocumentLearner(this);
 
@@ -65,12 +70,16 @@ public class GUI {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(directoryPath == null) {
+                if (directoryPath == null) {
                     String message = "Test data needs to be entered before you can start testing";
                     Dialog dialog = new Dialog(message);
 
                 } else {
                     documentLearner.classify(file);
+                    String message = "<html>Documents classified: " + documents + "<br>"
+                            + number + "out of " + total + "correct for: " + className +
+                            "<br>Accuracy: " + accuracy + "<html>";
+                    Dialog dialog = new Dialog(message);
                 }
             }
         });
@@ -93,7 +102,7 @@ public class GUI {
         startLearningButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(directoryPath == null) {
+                if (directoryPath == null) {
                     String message = "Train data needs to be entered before you can start training";
                     Dialog dialog = new Dialog(message);
 
@@ -103,11 +112,5 @@ public class GUI {
                 }
             }
         });
-    }
-
-    public DataClass verifyClass(File file, DataClass dataClass) {
-
-
-        return null;
     }
 }

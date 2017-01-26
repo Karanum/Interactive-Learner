@@ -1,6 +1,7 @@
 package learner;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -46,17 +47,26 @@ public class DocumentLearner {
     }
 
     public void classify(File file) {
+        HashMap<DataClass, ArrayList<DataFile>> files = new HashMap<>();
         if(file.isDirectory()) {
-            for (File f : file.listFiles()) {
-                DataClass dataClass = classifier.classify(new DataFile(f));
-                gui.verifyClass(f, dataClass);
+            if (file.isDirectory()) {
+                for (File directory : file.listFiles()) {
+                    String dirName = directory.getName();
+                    DataClass dataClass = DataClass.getClass(dirName);
+                    if (dataClass == null) {
+                        continue;
+                    }
+                    for (File textFile : directory.listFiles()) {
+
+                    }
+                        DataFile dataFile = new DataFile(textFile);
+                        if (!files.containsKey(dataClass)) {
+                            files.put(dataClass, new ArrayList<>());
+                        }
+                        files.get(dataClass).add(dataFile);
+                    }
+                }
             }
-        } else {
-            DataClass dataClass = classifier.classify(new DataFile(file));
-            gui.verifyClass(file, dataClass);
-        }
-
-
     }
 }
 //        Set<String> keys = words.keySet();
