@@ -33,7 +33,6 @@ public class GUI {
     private DocumentLearner documentLearner;
     private File file;
     private DataClass verifiedClass;
-    private ResultTable;
 
     public GUI() {
 
@@ -77,9 +76,12 @@ public class GUI {
 
                 } else {
                     ResultTable resultTable = documentLearner.classify(file);
-                    String message = "<html>Documents classified: " + documents + "<br>"
-                            + number + "out of " + total + "correct for: " + className +
-                            "<br>Accuracy: " + accuracy + "<html>";
+                    String message = "<html>Documents classified: " + resultTable.getTotalResults() + "<br>";
+                    for (DataClass c : DataClass.getClasses()) {
+                        message += resultTable.getCorrect(c) + " out of " + resultTable.getTrueAmount(c) + " correct for: "
+                        + c.getName() + "<br>";
+                    }
+                    message += "Accuracy: " + resultTable.getAccuracy() + "<html>";
                     Dialog dialog = new Dialog(message);
                 }
             }
@@ -103,13 +105,28 @@ public class GUI {
         startLearningButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int vocabularyData = -1;
+                float chiData = -1;
+                try {
+                    vocabularyData = Integer.parseInt(vocabularySize.getText());
+                } catch (NumberFormatException error) {
+                    Dialog dialog = new Dialog("Invalid vocabulary size, please insert a whole number");
+                    return;
+                }
+                try {
+                    chiData = Float.parseFloat(chiValue.getText());
+                } catch (NumberFormatException error1) {
+                    Dialog dialog = new Dialog("Invalid chi value, please enter a decimal number");
+                    return;
+                }
+
                 if (directoryPath == null) {
                     String message = "Train data needs to be entered before you can start training";
                     Dialog dialog = new Dialog(message);
 
                 } else {
                     //System.out.println(file.getName());
-                    documentLearner.loadTrainingData(file);
+                    documentLearner.loadTrainingData(file, vocabularyData, chiData);
                 }
             }
         });

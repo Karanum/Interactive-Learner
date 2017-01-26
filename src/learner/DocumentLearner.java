@@ -19,19 +19,23 @@ public class DocumentLearner {
     //String DirectoryPath = "D:\\school\\module 6 Intelligent Interaction Design\\AI\\Interactive Learner\\blogs";
     // HashMap<String, HashMap<String, Integer>> files = new HashMap<String, HashMap<String, Integer>>();
 
-    public void loadTrainingData(File file) {
+    public void loadTrainingData(File file, int vocabularySize, float chiValue) {
+        classifier.setMaxVocabSize(vocabularySize);
+        classifier.setChiThreshold(chiValue);
         File[] classes = file.listFiles();
         if (classes != null) {
             for (File classDir : classes) {
+                //System.out.println(classDir.getName());
                 DataClass dataClass;
                 if (!DataClass.getClasses().contains(classDir.getName())) {
                     dataClass = new DataClass(file.getName());
                 } else {
                     dataClass = DataClass.getClass(classDir.getName());
                 }
-                System.out.println(dataClass.getName());
+                //System.out.println(dataClass.getName());
                 if (classDir.listFiles() != null) {
                     for (File f : classDir.listFiles()) {
+                        //System.out.println(f.getName());
                         dataClass.addFile(new DataFile(f));
                         //System.out.println(file.getName());
 //                        if (!files.containsKey(file.getName())) {

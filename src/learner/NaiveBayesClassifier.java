@@ -32,7 +32,9 @@ public class NaiveBayesClassifier implements Classifier {
             vocabulary.addAll(c.getVocabulary().keySet());
         }
         cullVocabulary();
+        System.out.println("Creating probability tables...");
         calculateTables();
+        System.out.println("Creating record of chi-squared values...");
         outputChiValues();
     }
 
@@ -89,6 +91,7 @@ public class NaiveBayesClassifier implements Classifier {
     private void cullVocabulary() {
         HashMap<String, Integer> combinedVocab = DataClass.getCombinedVocabulary();
 
+        System.out.println("Calculating chi-squared values...");
         HashMap<String, Float> chiValueMap = new HashMap<>();
         for (String word : vocabulary) {
             float chi = 0;
@@ -101,6 +104,7 @@ public class NaiveBayesClassifier implements Classifier {
             chiValueMap.put(word, chi);
         }
 
+        System.out.println("Culling vocabulary...");
         chiValues = new ArrayList<>(chiValueMap.entrySet());
         Collections.sort(chiValues, (Map.Entry<String, Float> a, Map.Entry<String, Float> b)
                                         -> b.getValue().compareTo(a.getValue()));
@@ -121,6 +125,7 @@ public class NaiveBayesClassifier implements Classifier {
             }
         }
 
+        System.out.println("Storing final training data...");
         trainingData = new HashMap<>();
         for (DataClass c : DataClass.getClasses()) {
             trainingData.put(c, new HashMap<>());
