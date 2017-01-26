@@ -33,6 +33,7 @@ public class GUI {
     private DocumentLearner documentLearner;
     private File file;
     private DataClass verifiedClass;
+    private ResultTable;
 
     public GUI() {
 
@@ -75,7 +76,7 @@ public class GUI {
                     Dialog dialog = new Dialog(message);
 
                 } else {
-                    documentLearner.classify(file);
+                    ResultTable resultTable = documentLearner.classify(file);
                     String message = "<html>Documents classified: " + documents + "<br>"
                             + number + "out of " + total + "correct for: " + className +
                             "<br>Accuracy: " + accuracy + "<html>";

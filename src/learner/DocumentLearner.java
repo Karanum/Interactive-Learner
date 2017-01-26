@@ -46,9 +46,10 @@ public class DocumentLearner {
         classifier.setTrainingData(DataClass.getClasses());
     }
 
-    public void classify(File file) {
-        HashMap<DataClass, ArrayList<DataFile>> files = new HashMap<>();
-        if(file.isDirectory()) {
+    public ResultTable classify(File file) {
+        ResultTable resultTable = new ResultTable();
+        //HashMap<DataClass, ArrayList<DataFile>> files = new HashMap<>();
+        if (file.isDirectory()) {
             if (file.isDirectory()) {
                 for (File directory : file.listFiles()) {
                     String dirName = directory.getName();
@@ -57,16 +58,14 @@ public class DocumentLearner {
                         continue;
                     }
                     for (File textFile : directory.listFiles()) {
-
-                    }
                         DataFile dataFile = new DataFile(textFile);
-                        if (!files.containsKey(dataClass)) {
-                            files.put(dataClass, new ArrayList<>());
-                        }
-                        files.get(dataClass).add(dataFile);
+                        DataClass resultClass = classifier.classify(dataFile);
+                        resultTable.addResult(dataClass, resultClass);
                     }
                 }
             }
+        }
+        return resultTable;
     }
 }
 //        Set<String> keys = words.keySet();
